@@ -4,7 +4,8 @@ An interactive, wall-calendar-inspired React component built entirely from scrat
 
 No calendar libraries. No date utility dependencies. Pure TypeScript calendar math. Every animation, every interaction, every pixel -- intentional.
 
-**Live Demo:** [tuf-calendar.vercel.app](https://tuf-calendar.vercel.app)
+**Live Demo:** [tuf-calendar.vercel.app](https://tuf-calender-one.vercel.app/)
+**Demo Recording:** https://drive.google.com/file/d/1OQxAAj7o5ErLh35wESTOuvj6V8697HUs/view?usp=sharing
 
 ---
 
