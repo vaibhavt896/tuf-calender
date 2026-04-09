@@ -90,17 +90,20 @@ export const DayCell = memo(function DayCell({
         isFocused && "ring-2 ring-[var(--color-accent-val)] ring-offset-2 ring-offset-[var(--color-surface-val)]"
       )}
     >
-      <span>{day.day}</span>
+      {/* Number — nudged 3px above center so dot has visual room below */}
+      <span className="-translate-y-[3px] leading-none">{day.day}</span>
 
-      {/* Note indicator dot */}
-      {hasNotes && !isEndpoint && (
-        <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[var(--color-accent-val)]" />
-      )}
-
-      {/* Holiday indicator dot */}
-      {day.holiday && day.isCurrentMonth && !isEndpoint && !hasNotes && (
-        <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[var(--color-holiday)]" />
-      )}
+      {/* Indicator dot — always absolutely positioned at bottom so number never shifts */}
+      <span
+        className={cn(
+          "absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full",
+          hasNotes && !isEndpoint
+            ? "bg-[var(--color-accent-val)]"
+            : day.holiday && day.isCurrentMonth && !isEndpoint && !hasNotes
+            ? "bg-[var(--color-holiday)]"
+            : "hidden"
+        )}
+      />
     </motion.button>
   );
 

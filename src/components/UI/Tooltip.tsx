@@ -22,7 +22,7 @@ export const Tooltip = memo(function Tooltip({ content, emoji, typeBadge, childr
 
   return (
     <div
-      className="relative inline-flex"
+      className="relative flex w-full"
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
       onFocus={() => setShow(true)}
