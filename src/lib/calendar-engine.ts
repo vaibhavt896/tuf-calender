@@ -75,10 +75,10 @@ export function isDateInRange(dateKey: string, start: string, end: string): bool
  *
  * @param year - Full year (e.g. 2026)
  * @param month - 0-indexed month (0 = January)
+ * @param today - The current date for isToday computation. Pass null during SSR to avoid hydration mismatches.
  * @returns 6 rows of 7 CalendarDay objects
  */
-export function generateMonthGrid(year: number, month: number): CalendarGrid {
-  const today = new Date();
+export function generateMonthGrid(year: number, month: number, today: Date | null): CalendarGrid {
   const daysInMonth = getDaysInMonth(year, month);
   const firstDayOffset = getFirstDayOfWeek(year, month);
 
@@ -129,7 +129,7 @@ export function generateMonthGrid(year: number, month: number): CalendarGrid {
         month: actualMonth,
         year: actualYear,
         isCurrentMonth,
-        isToday: isSameDay(date, today),
+        isToday: today ? isSameDay(date, today) : false,
         isWeekend: col >= 5, // Sat=5, Sun=6
         holiday: holiday?.name ?? null,
         dateKey,
@@ -147,11 +147,11 @@ export function generateMonthGrid(year: number, month: number): CalendarGrid {
 /**
  * Build the complete MonthData object.
  */
-export function getMonthData(year: number, month: number): MonthData {
+export function getMonthData(year: number, month: number, today: Date | null): MonthData {
   return {
     year,
     month,
-    grid: generateMonthGrid(year, month),
+    grid: generateMonthGrid(year, month, today),
     daysInMonth: getDaysInMonth(year, month),
     startDay: getFirstDayOfWeek(year, month),
   };

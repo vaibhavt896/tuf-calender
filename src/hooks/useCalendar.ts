@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import {
   getMonthData,
   getPrevMonth,
@@ -13,6 +13,7 @@ interface UseCalendarReturn {
   month: number;
   monthData: MonthData;
   direction: NavigationDirection;
+  todayDate: Date | null;
   goToPrevMonth: () => void;
   goToNextMonth: () => void;
   goToMonth: (year: number, month: number) => void;
@@ -20,12 +21,23 @@ interface UseCalendarReturn {
 }
 
 export function useCalendar(): UseCalendarReturn {
-  const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
+  // todayDate is null during SSR — set client-side after hydration to avoid mismatches.
+  // This ensures generateMonthGrid produces identical output on server and client.
+  const [todayDate, setTodayDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setTodayDate(new Date());
+  }, []);
+
+  // Initialize year/month from a stable reference, updated once after hydration
+  const [year, setYear] = useState(() => new Date().getFullYear());
+  const [month, setMonth] = useState(() => new Date().getMonth());
   const [direction, setDirection] = useState<NavigationDirection>("next");
 
-  const monthData = useMemo(() => getMonthData(year, month), [year, month]);
+  const monthData = useMemo(
+    () => getMonthData(year, month, todayDate),
+    [year, month, todayDate]
+  );
 
   const goToPrevMonth = useCallback(() => {
     setDirection("prev");
@@ -61,6 +73,7 @@ export function useCalendar(): UseCalendarReturn {
     month,
     monthData,
     direction,
+    todayDate,
     goToPrevMonth,
     goToNextMonth,
     goToMonth,

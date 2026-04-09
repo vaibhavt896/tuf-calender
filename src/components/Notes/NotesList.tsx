@@ -3,7 +3,8 @@
 import { memo } from "react";
 import { AnimatePresence } from "framer-motion";
 import { NoteEditor } from "./NoteEditor";
-import { StickyNote } from "lucide-react";
+import { PenLine } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { Note, NoteColor } from "@/lib/types";
 
 interface NotesListProps {
@@ -21,13 +22,26 @@ export const NotesList = memo(function NotesList({
 }: NotesListProps) {
   if (notes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-8 text-center">
-        <StickyNote size={32} className="text-[var(--color-text-muted)] mb-2 opacity-40" />
-        <p className="text-sm text-[var(--color-text-muted)]">
-          No notes yet
+      <div className="flex flex-col items-center justify-center py-8 text-center select-none">
+        {/* Stacked note-card illustration */}
+        <div className="relative w-11 h-11 mb-3">
+          <div className={cn(
+            "absolute inset-0 rounded-xl rotate-3",
+            "bg-[var(--color-surface-elevated-val)] border border-[var(--color-border)]"
+          )} />
+          <div className={cn(
+            "absolute inset-0 rounded-xl -rotate-1",
+            "bg-[var(--color-surface-elevated-val)] border border-[var(--color-border)]",
+            "flex items-center justify-center"
+          )}>
+            <PenLine size={16} className="text-[var(--color-text-muted)] opacity-60" />
+          </div>
+        </div>
+        <p className="text-[13px] font-medium text-[var(--color-text-secondary)]">
+          Nothing here yet
         </p>
-        <p className="text-xs text-[var(--color-text-muted)] mt-1 opacity-60">
-          Select a date and add one
+        <p className="text-xs text-[var(--color-text-muted)] mt-1 opacity-75">
+          Pick a date to start writing
         </p>
       </div>
     );

@@ -7,6 +7,7 @@ import { MONTH_NAMES_SHORT } from "@/lib/constants";
 interface MiniYearViewProps {
   currentYear: number;
   currentMonth: number;
+  todayDate: Date | null;
   onSelectMonth: (year: number, month: number) => void;
   hasNotesForMonth: (year: number, month: number) => boolean;
 }
@@ -14,17 +15,17 @@ interface MiniYearViewProps {
 export const MiniYearView = memo(function MiniYearView({
   currentYear,
   currentMonth,
+  todayDate,
   onSelectMonth,
   hasNotesForMonth,
 }: MiniYearViewProps) {
-  const today = new Date();
-  const isTodayYear = currentYear === today.getFullYear();
+  const isTodayYear = todayDate ? currentYear === todayDate.getFullYear() : false;
 
   return (
     <div className="grid grid-cols-4 gap-2">
       {MONTH_NAMES_SHORT.map((name, monthIdx) => {
         const isActive = monthIdx === currentMonth;
-        const isTodayMonth = isTodayYear && monthIdx === today.getMonth();
+        const isTodayMonth = isTodayYear && todayDate ? monthIdx === todayDate.getMonth() : false;
         const hasNotes = hasNotesForMonth(currentYear, monthIdx);
 
         return (

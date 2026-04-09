@@ -46,6 +46,7 @@ export function WallCalendar() {
     month,
     monthData,
     direction,
+    todayDate,
     goToPrevMonth,
     goToNextMonth,
     goToMonth,
@@ -83,8 +84,9 @@ export function WallCalendar() {
   const [announcement, setAnnouncement] = useState("");
   const [isNotesSheetOpen, setIsNotesSheetOpen] = useState(false);
 
-  const today = new Date();
-  const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
+  const isCurrentMonth = todayDate
+    ? year === todayDate.getFullYear() && month === todayDate.getMonth()
+    : false;
 
   // Clear range selection when navigating months so notes context stays relevant
   const navPrev = useCallback(() => { clearRange(); goToPrevMonth(); }, [clearRange, goToPrevMonth]);
@@ -255,6 +257,7 @@ export function WallCalendar() {
           <MiniYearView
             currentYear={year}
             currentMonth={month}
+            todayDate={todayDate}
             onSelectMonth={navToMonth}
             hasNotesForMonth={hasNotesForMonthCheck}
           />
